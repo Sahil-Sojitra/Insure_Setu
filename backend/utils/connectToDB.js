@@ -2,19 +2,12 @@ import pg from 'pg';
 import env from 'dotenv';
 env.config();
 
-const requiredEnvVars = ['PG_USER', 'PG_HOST', 'PG_DATABASE', 'PG_PASSWORD', 'PG_PORT'];
+const DATABASE_URL = process.env.DATABASE_URL || "postgresql://insure_setu_databsae_user:o4e7qwPu1dmjqL5mYlRTLWyYe1lng7Lv@dpg-d3ssktq4d50c73ekl660-a.oregon-postgres.render.com/insure_setu_databsae";
 
-requiredEnvVars.forEach((varName) => {
-    if (!process.env[varName]) {
-        
-        throw new Error(`Environment variable ${varName} is not set.`);
-        process.exit(1);  
-    }
-});
-
+console.log('Attempting to connect to database with URL:', DATABASE_URL);
 
 const db = new pg.Pool({
-    connectionString: process.env.DATABASE_URL || `postgresql://${process.env.PG_USER}:${process.env.PG_PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DATABASE}`,
+    connectionString: DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
     }
