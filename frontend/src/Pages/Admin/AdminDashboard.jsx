@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_ENDPOINTS } from '../../config/api';
 import {
     Box,
     Grid,
@@ -24,7 +25,6 @@ import {
     Button,
     Fade,
     Grow,
-    useTheme,
     alpha,
     Stack,
     Tooltip,
@@ -52,7 +52,7 @@ import {
 } from '@mui/icons-material';
 
 const AdminDashboard = () => {
-    const theme = useTheme();
+    // Removed unused theme variable
     const [dashboardData, setDashboardData] = useState({
         totalAgents: 0,
         totalCustomers: 0,
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
             setLoading(true);
 
             // Fetch agents data
-            const agentsResponse = await fetch('/api/agents');
+            const agentsResponse = await fetch(`${API_ENDPOINTS.agents}`);
             if (!agentsResponse.ok) {
                 throw new Error('Failed to fetch agents');
             }
@@ -114,7 +114,7 @@ const AdminDashboard = () => {
             // Fetch customers data
             let customersResult = { data: [] };
             try {
-                const customersResponse = await fetch('/api/customers');
+                const customersResponse = await fetch(`${API_ENDPOINTS.customers}`);
                 if (customersResponse.ok) {
                     customersResult = await customersResponse.json();
                     console.log('Customers API response:', customersResult);
