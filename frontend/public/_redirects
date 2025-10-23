@@ -1,6 +1,1 @@
 /* /index.html 200
-/api/* https://insure-setu-backend.onrender.com/api/:splat 200
-/login /index.html 200
-/user/* /index.html 200
-/agent/* /index.html 200
-/admin/* /index.html 200
