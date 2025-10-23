@@ -81,19 +81,24 @@ const AgentManagement = () => {
 
     useEffect(() => {
         filterAgents();
-    }, [agents, searchTerm, statusFilter]);
+    }, [agents, searchTerm, statusFilter, filterAgents]);
 
     const fetchAgents = async () => {
         try {
             setLoading(true);
-            const response = await fetch('/api/agents');
-            const result = await response.json();
-
-            if (response.ok) {
-                setAgents(result.data || []);
-            } else {
-                throw new Error(result.message || 'Failed to fetch agents');
+            const response = await fetch('https://insure-setu-backend.onrender.com/api/agents', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any auth headers if needed
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+            
+            const result = await response.json();
+            setAgents(result.data || []);
         } catch (error) {
             console.error('Error fetching agents:', error);
             setSnackbar({
@@ -106,7 +111,7 @@ const AgentManagement = () => {
         }
     };
 
-    const filterAgents = () => {
+    const filterAgents = React.useCallback(() => {
         let filtered = [...agents];
 
         // Search filter
@@ -126,7 +131,7 @@ const AgentManagement = () => {
 
         setFilteredAgents(filtered);
         setCurrentPage(1);
-    };
+    }, [agents, searchTerm, statusFilter]);
 
     const handleOpenDialog = (mode, agent = null) => {
         setDialogMode(mode);
@@ -184,7 +189,8 @@ const AgentManagement = () => {
             }
 
             console.log('Form data:', formData);
-            const url = dialogMode === 'add' ? '/api/agents' : `/api/agents/${selectedAgent.agent_id}`;
+            const baseUrl = 'https://insure-setu-backend.onrender.com/api/agents';
+            const url = dialogMode === 'add' ? baseUrl : `${baseUrl}/${selectedAgent.agent_id}`;
             const method = dialogMode === 'add' ? 'POST' : 'PUT';
 
             console.log('Making request to:', url, 'with method:', method);
@@ -193,6 +199,7 @@ const AgentManagement = () => {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
+                    // Add any auth headers if needed
                 },
                 body: JSON.stringify(formData),
             });
@@ -236,8 +243,12 @@ const AgentManagement = () => {
         }
 
         try {
-            const response = await fetch(`/api/agents/${agentId}`, {
+            const response = await fetch(`https://insure-setu-backend.onrender.com/api/agents/${agentId}`, {
                 method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Add any auth headers if needed
+                },
             });
 
             const result = await response.json();
