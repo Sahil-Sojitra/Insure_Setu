@@ -1,0 +1,32 @@
+# Node Modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+
+
+# Logs
+logs/
+*.log
+
+# Source maps
+*.map
+
+# Dotenv files
+.env
+.env.local
+.env.*.local
+
+# Vite cache
+.vite/
+
+# VSCode settings
+.vscode/
+
+# Mac System Files
+.DS_Store
+
+# Windows system files
+Thumbs.db
