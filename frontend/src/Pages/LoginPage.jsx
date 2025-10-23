@@ -27,12 +27,13 @@ import {
     Login as LoginIcon
 } from '@mui/icons-material';
 import { useAuth } from '../Hooks/useAuth';
+import { API_ENDPOINTS } from '../config/api';
 
 const LoginPage = () => {
     const { isAuthenticated, userType, login } = useAuth();
 
     // API configuration
-    const API_BASE_URL = 'http://localhost:5000/api/auth/customer';
+    const { customerAuth } = API_ENDPOINTS;
 
     // Tab state
     const [activeTab, setActiveTab] = useState(0);
@@ -215,7 +216,7 @@ const LoginPage = () => {
         setSuccess('');
 
         try {
-            const response = await fetch(`${API_BASE_URL}/send-otp`, {
+            const response = await fetch(`${API_ENDPOINTS.customerAuth}/send-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -292,7 +293,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await fetch(`${API_BASE_URL}/verify-otp`, {
+            const response = await fetch(`${API_ENDPOINTS.customerAuth}/verify-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

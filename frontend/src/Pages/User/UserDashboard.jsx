@@ -80,7 +80,7 @@ const UserDashboard = () => {
                 }
 
                 // Fetch all customer policies from backend for this mobile number
-                const response = await fetch(`http://localhost:5000/api/customers`);
+                const response = await fetch(API_ENDPOINTS.customers);
                 const result = await response.json();
 
                 if (response.ok && result.data) {
