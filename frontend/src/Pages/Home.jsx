@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     Container,
@@ -59,6 +60,7 @@ import {
 } from '@mui/icons-material';
 
 const Home = () => {
+    const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [contactDialogOpen, setContactDialogOpen] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
@@ -494,7 +496,7 @@ const Home = () => {
                         </Box>
                         <Button
                             variant="contained"
-                            onClick={() => window.location.href = '/login'}
+                            onClick={() => navigate('/login')}
                             sx={{
                                 display: { xs: 'none', sm: 'inline-flex' },
                                 background: 'rgba(255,255,255,0.2)',
@@ -705,7 +707,7 @@ const Home = () => {
                                 <Tooltip title="Access your account" arrow>
                                     <Button
                                         variant="contained"
-                                        href="/login"
+                                        onClick={() => navigate('/login')}
                                         size={isMobile ? 'small' : 'medium'}
                                         sx={{
                                             borderRadius: 4,
@@ -909,7 +911,7 @@ const Home = () => {
                         <Button
                             fullWidth
                             variant="contained"
-                            href="/login"
+                            onClick={() => navigate('/login')}
                             sx={{
                                 borderRadius: 3,
                                 textTransform: 'none',
@@ -1075,7 +1077,7 @@ const Home = () => {
                                                 boxShadow: '0 12px 40px rgba(102, 126, 234, 0.4)'
                                             }
                                         }}
-                                        href="/login"
+                                        onClick={() => navigate('/login')}
                                     >
                                         Get Started - Login
                                     </Button>

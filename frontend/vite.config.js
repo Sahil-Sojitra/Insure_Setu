@@ -18,7 +18,10 @@ export default defineConfig({
       output: {
         manualChunks: undefined
       }
-    }
+    },
+    // Add support for client-side routing
+    assetsInlineLimit: 0,
+    sourcemap: true,
   },
   base: '/',
   esbuild: {
