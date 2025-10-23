@@ -1,6 +1,26 @@
 {
   "routes": [
     {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/user/*",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/agent/*",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/admin/*",
+      "dest": "/index.html"
+    },
+    {
       "src": "/*",
       "dest": "/index.html"
     }

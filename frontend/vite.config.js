@@ -23,7 +23,7 @@ export default defineConfig({
     assetsInlineLimit: 0,
     sourcemap: true,
   },
-  base: '/',
+  base: '',
   esbuild: {
     target: 'es2020'
   }
