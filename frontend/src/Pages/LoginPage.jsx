@@ -32,9 +32,6 @@ import { API_ENDPOINTS } from '../config/api';
 const LoginPage = () => {
     const { isAuthenticated, userType, login } = useAuth();
 
-    // API configuration
-    const { customerAuth } = API_ENDPOINTS;
-
     // Tab state
     const [activeTab, setActiveTab] = useState(0);
 
@@ -253,7 +250,7 @@ const LoginPage = () => {
         setSuccess('');
 
         try {
-            const response = await fetch('/api/agents/auth/send-otp', {
+            const response = await fetch(`${API_ENDPOINTS.agents}/auth/send-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -336,7 +333,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await fetch('/api/agents/auth/verify-otp', {
+            const response = await fetch(`${API_ENDPOINTS.agents}/auth/verify-otp`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
