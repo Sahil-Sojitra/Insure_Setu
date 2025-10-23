@@ -12,6 +12,10 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist',
+  },
+  base: '/',
   esbuild: {
     target: 'es2020'
   }
