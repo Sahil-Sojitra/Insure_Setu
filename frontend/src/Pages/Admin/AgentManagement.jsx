@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Box,
     Grid,
     Card,
     CardContent,
     Typography,
+    CircularProgress,
     Table,
     TableBody,
     TableCell,
@@ -30,7 +31,8 @@ import {
     FormControl,
     InputLabel,
     Select,
-    Tooltip
+    Tooltip,
+    CircularProgress
 } from '@mui/material';
 import {
     Add as AddIcon,
@@ -51,6 +53,7 @@ const AgentManagement = () => {
     const [agents, setAgents] = useState([]);
     const [filteredAgents, setFilteredAgents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [dialogMode, setDialogMode] = useState('add'); // 'add' or 'edit'
     const [selectedAgent, setSelectedAgent] = useState(null);
@@ -86,24 +89,39 @@ const AgentManagement = () => {
     const fetchAgents = async () => {
         try {
             setLoading(true);
+            setError(null);
+            console.log('Fetching agents...');
+            
             const response = await fetch('https://insure-setu-backend.onrender.com/api/agents', {
                 headers: {
                     'Content-Type': 'application/json',
-                    // Add any auth headers if needed
+                    // Get the token from localStorage or your auth context
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
+            
+            console.log('Response status:', response.status);
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const result = await response.json();
-            setAgents(result.data || []);
+            console.log('Fetched agents:', result);
+            
+            if (result.data) {
+                setAgents(result.data);
+                setFilteredAgents(result.data);
+            } else {
+                setAgents([]);
+                setFilteredAgents([]);
+            }
         } catch (error) {
             console.error('Error fetching agents:', error);
+            setError(error.message);
             setSnackbar({
                 open: true,
-                message: 'Failed to fetch agents',
+                message: `Failed to fetch agents: ${error.message}`,
                 severity: 'error'
             });
         } finally {
@@ -330,6 +348,28 @@ const AgentManagement = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const paginatedAgents = filteredAgents.slice(startIndex, startIndex + itemsPerPage);
 
+    if (error) {
+        return (
+            <Box sx={{ p: 3, textAlign: 'center' }}>
+                <Typography variant="h6" color="error" gutterBottom>
+                    Error loading agents
+                </Typography>
+                <Typography color="text.secondary" paragraph>
+                    {error}
+                </Typography>
+                <Button 
+                    variant="contained" 
+                    onClick={() => {
+                        setError(null);
+                        fetchAgents();
+                    }}
+                >
+                    Retry
+                </Button>
+            </Box>
+        );
+    }
+
     return (
         <Box>
             {/* Header */}
@@ -342,6 +382,14 @@ const AgentManagement = () => {
                         Manage and monitor all agents in the system
                     </Typography>
                 </Box>
+                {loading && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <CircularProgress size={20} />
+                        <Typography variant="body2" color="text.secondary">
+                            Loading...
+                        </Typography>
+                    </Box>
+                )}
                 <Box sx={{ display: 'flex', gap: 2 }}>
                     <Button
                         variant="outlined"
@@ -366,12 +414,28 @@ const AgentManagement = () => {
                 </Box>
             </Box>
 
-            {/* Statistics Cards */}
-            <Grid container spacing={3} sx={{ mb: 3 }}>
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card>
-                        <CardContent>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            {loading ? (
+                <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    minHeight: '200px',
+                    flexDirection: 'column',
+                    gap: 2
+                }}>
+                    <CircularProgress />
+                    <Typography variant="body1" color="text.secondary">
+                        Loading agents...
+                    </Typography>
+                </Box>
+            ) : (
+                <>
+                    {/* Statistics Cards */}
+                    <Grid container spacing={3} sx={{ mb: 3 }}>
+                        <Grid item xs={12} sm={6} md={3}>
+                            <Card>
+                                <CardContent>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                                 <Box>
                                     <Typography color="textSecondary" gutterBottom variant="body2">
                                         Total Agents
