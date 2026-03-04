@@ -4,6 +4,4 @@ export const API_ENDPOINTS = {
     customerAuth: `${API_BASE_URL}/api/auth/customer`,
     agents: `${API_BASE_URL}/api/agents`,
     users: `${API_BASE_URL}/api/users`,
-    admin: `${API_BASE_URL}/api/admin`,
-    agentAuth: `${API_BASE_URL}/api/agents/auth`,
 };

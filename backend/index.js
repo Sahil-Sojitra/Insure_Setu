@@ -40,15 +40,22 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'CRM Backend is running!', timestamp: new Date().toISOString() });
 });
 
-// Customer routes
 app.use('/api/customers', customerRoutes);
+app.use('/api/agent/customers', customerRoutes);
+app.use('/api/customer', customerRoutes);
+
+
 app.use('/api/users', customerRoutes);
+app.use('/api/agent/users', customerRoutes);
+app.use('/api/user', customerRoutes);
 
 // Customer authentication routes
 app.use('/api/auth/customer', customerAuthRoutes);
+app.use('/api/customer-auth', customerAuthRoutes);
 
 // Agent routes
 app.use('/api/agents', agentRoutes);
+app.use('/api/agent', agentRoutes);
 
 app.use(function (req, res) {
   res.status(404).send({ message: 'Not Found' });

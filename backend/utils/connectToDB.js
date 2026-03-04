@@ -2,7 +2,7 @@ import pg from 'pg';
 import env from 'dotenv';
 env.config();
 
-const DATABASE_URL = process.env.DATABASE_URL || "postgresql://insure_setu_databsae_user:o4e7qwPu1dmjqL5mYlRTLWyYe1lng7Lv@dpg-d3ssktq4d50c73ekl660-a.oregon-postgres.render.com/insure_setu_databsae";
+const DATABASE_URL = process.env.DATABASE_URL ;
 
 console.log('Attempting to connect to database with URL:', DATABASE_URL);
 
