@@ -40,9 +40,16 @@ export async function sendAgentOTP(req, res, next) {
         // Update OTP in database
         await query(updateAgentOTPQuery, [otpHash, otpExpiry, agentAuth.rows[0].agent_id]);
 
-        // In production, send OTP via SMS service
-        // For demo, we'll return the OTP (remove this in production)
-        console.log(`Agent OTP for ${mobile}: ${otp}`);
+        // Log OTP with formatted display
+        console.log('\n');
+        console.log('╔══════════════════════════════════════════════════════╗');
+        console.log('║                   AGENT OTP CODE                     ║');
+        console.log('╠══════════════════════════════════════════════════════╣');
+        console.log(`║  Mobile: ${mobile.padEnd(42, ' ')} ║`);
+        console.log(`║  OTP Code: ${otp.padEnd(39, ' ')} ║`);
+        console.log(`║  Time: ${new Date().toLocaleTimeString().padEnd(41, ' ')} ║`);
+        console.log('╚══════════════════════════════════════════════════════╝');
+        console.log('\n');
 
         res.status(200).json({
             message: 'OTP sent successfully',
